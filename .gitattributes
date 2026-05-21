@@ -1,0 +1,6 @@
+# Set default behavior for all files (auto line-ending normalization for text)
+* text=auto
+
+# Force CSV files to be treated as binary (preserves byte-exact MD5).
+# This line MUST come AFTER the wildcard above to take precedence.
+*.csv binary
