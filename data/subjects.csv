@@ -1,0 +1,19 @@
+subject_id,sex,age_range,hrv_eligible,coupling_eligible,pat_eligible,brs_tf_eligible,notes,brsseq_down_eligible,brsseq_down_exclusion_reason,pat_exclusion_reason
+S01,M,20-40,True,True,True,True,,True,,
+S02,M,20-40,True,True,True,True,,True,,
+S03,M,20-40,True,True,True,False,,True,,
+S04,M,20-40,True,True,True,True,,True,,
+S05,M,20-40,True,True,True,False,,True,,
+S06,M,20-40,True,True,True,True,,False,"ECG or BP measurement failure (provisional, awaiting per-subject verification post-submission)",
+S07,M,20-40,True,True,True,True,,True,,
+S08,M,20-40,True,True,True,True,,True,,
+S09,M,20-40,True,True,True,False,,True,,
+S10,M,20-40,True,True,True,True,,True,,
+S11,M,20-40,True,True,True,False,,True,,
+S12,M,20-40,True,True,True,True,,False,"ECG or BP measurement failure (provisional, awaiting per-subject verification post-submission)",
+S13,M,20-40,True,True,False,True,"PAT pipeline anomaly (near-zero values), excluded from PAT-dependent metrics",True,,Implausible PAT values due to ECG noise; PTT < 1e-10 ms in raw export
+S14,M,20-40,True,True,True,True,,True,,
+S15,M,20-40,True,True,True,True,,True,,
+S16,M,20-40,True,True,False,False,"PAT pipeline anomaly (near-zero values), excluded from PAT-dependent metrics",True,,Implausible PAT values due to ECG noise; PTT < 1e-10 ms in raw export
+S17,M,20-40,True,True,True,True,,False,"ECG or BP measurement failure (provisional, awaiting per-subject verification post-submission)",
+S18,M,20-40,True,True,True,False,,True,,

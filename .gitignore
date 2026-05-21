@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local scratch
+scratch/
+*.tmp
+
+# Runtime output of --recompute, not committed
+docs/anchor_tolerance_report.md
+docs/anchor_failure_report.md
+results/Additional_File_2_recomputed.csv
+
+# Pipeline runtime outputs, not committed
+results/_*.md
+results/_*.csv
+results/figures/
+results/tables/
+
+# Archives (not committed, generated for distribution)
+*.zip
