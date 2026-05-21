@@ -28,10 +28,9 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "jRCT1032230440",
+      "identifier": "https://jrct.niph.go.jp/en-latest-detail/jRCT1032230440",
       "relation": "isDocumentedBy",
-      "scheme": "other",
-      "resource_type": "other"
+      "scheme": "url"
     }
   ]
 }
