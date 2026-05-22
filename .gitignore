@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 *.so
 .Python
@@ -36,7 +37,10 @@ _diag_*.log
 # Runtime output of --recompute, not committed
 docs/anchor_tolerance_report.md
 docs/anchor_failure_report.md
+
+# Build artifacts from compute_*.py pipeline
 results/Additional_File_2_recomputed.csv
+results/*_recomputed.csv
 
 # Pipeline runtime outputs, not committed
 _build_log/
