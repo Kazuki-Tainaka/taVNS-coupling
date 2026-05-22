@@ -1,127 +1,93 @@
 # taVNS-coupling
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20323694.svg)](https://doi.org/10.5281/zenodo.20323694)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Data License: CC BY 4.0](https://img.shields.io/badge/Data%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 Reproducibility package for:
 
-> Katahara Y, Iijima A, Tainaka K. Transcutaneous auricular vagus nerve stimulation is associated with transient baroreflex sensitivity reduction while preserving Mayer-wave coherence: a comprehensive analysis of 120 cardiovascular metrics. Submitted to Journal of NeuroEngineering and Rehabilitation.
+> Katahara Y, Iijima A, Tainaka K. Transcutaneous auricular vagus nerve stimulation is associated with transient baroreflex sensitivity reduction while preserving Mayer-wave coherence: a comprehensive analysis of cardiovascular coupling and heart-rate-variability metrics. Submitted.
 
-## What this package provides
+## What This Package Provides
 
-This repository contains the de-identified derived data, canonical result tables,
-and validation harness accompanying the taVNS cardiovascular coupling study.
+This repository contains de-identified beat-to-beat data, canonical result
+tables, derived subject-level data, intermediate computation outputs, and figure
+generation scripts for the taVNS cardiovascular coupling study.
 
-- `data/beats/`: 54 beat-to-beat CSV files (18 participants x 3 phases) with RRI, SBP, and PAT columns.
-- `data/subjects.csv`: de-identified subject-level eligibility metadata.
-- `data/reference/`: byte-identical reference copies of the submitted Additional File 2 and 3 CSVs.
-- `results/Additional_File_2.csv`: 46 cardiovascular coupling metrics.
-- `results/Additional_File_3.csv`: 74 HRV metrics.
-- `scripts/`: entry points for materializing canonical results and running anchor checks.
-- `lib/` and `scripts/lib/`: public helper modules.
-- `tests/`: MD5 checks, anchor-value checks, de-identification checks, and repository-structure checks.
+- `data/beats/`: 54 beat-to-beat CSV files with RRI, SBP, and PAT columns.
+- `data/reference/`: canonical Additional File 2 and Additional File 3 CSVs.
+- `data/derived/`: per-subject values and intermediate arrays used by figures.
+- `results/`: materialized canonical CSV outputs.
+- `scripts/`: full reproduction pipeline entry points.
+- `figures/`: data-driven figure scripts and regenerated PNG outputs.
+- `tests/`: MD5 checks, derived-data consistency checks, figure checks, and de-identification checks.
 
-## Reproducibility scope
+## Reproduction
 
-This public release is designed to accompany the canonical results and verify a
-representative subset of metrics, while avoiding redistribution of restricted
-raw waveform data.
+1. `pip install -r requirements.txt`
+2. `pip install -r requirements-dev.txt`
+3. `python scripts/run_all.py`
+4. Figures are written to `figures/outputs/`
+5. Per-figure regeneration is available, for example `python figures/main/generate_fig2.py`
 
-### Default mode: canonical byte-identical preservation
+`scripts/run_all.py` materializes the canonical CSVs, regenerates all derived
+data under `data/derived/`, and then runs `figures/regenerate_all.py`.
 
-```bash
-python scripts/run_all.py
-```
-
-This materializes `results/Additional_File_2.csv` and
-`results/Additional_File_3.csv` byte-for-byte identical to the submitted
-canonical CSVs. The MD5 hashes are checked by `tests/test_md5_match.py`.
-
-### Anchor verification mode
+## Figure Regeneration
 
 ```bash
-python scripts/01_compute_coupling_metrics.py --recompute
+python figures/regenerate_all.py
 ```
 
-This regenerates `results/Additional_File_2_recomputed.csv` through the
-public-package serialization path and produces a tolerance comparison report
-against the canonical `results/Additional_File_2.csv`. The report covers 11
-anchor metrics: the BRSseq family, rhomax, bivariate GC F, and the six
-directions of trivariate GC3 F.
+Figure regeneration is fully data-driven from `data/derived/` and
+`data/reference/`.
 
-The recomputed CSV is intentionally byte-distinct from the canonical CSV. Their
-MD5 hashes differ, and this is checked by
-`tests/test_anchor_tolerance.py::test_recompute_is_not_materialization`.
+The script runs all 11 figure generators and writes an MD5 manifest to
+`figures/outputs/_md5_manifest.txt`.
 
-Tolerance bands:
+## Reproducibility Tiers
 
-- Cohen's dz: absolute tolerance +/-0.02
-- p-values: relative tolerance +/-5%
-- FDR-corrected q-values: relative tolerance +/-5%
+Reproducibility tiers are documented for canonical checks, anchor checks,
+per-subject persistence, intermediate outputs, and figure regeneration.
 
-**Current scope and intentional limitation.** In this public release, the
-recomputed anchor values are produced from the canonical-stable metric table
-rather than from a beat-from-source re-derivation in `lib/coupling.py`.
-Consequently, the displayed anchor deltas in the tolerance report are zero. The
-entry point, tolerance test, separate output CSV, and CI workflow are in place so
-that full beat-from-source implementations for these 11 metrics can be added
-without changing the validation contract.
+The package supports Tier S, Tier A, Tier B, Tier P, Tier I, and Tier F
+reproducibility. See `docs/reproducibility_tiers.md` for the full definition and
+figure-to-data dependency matrix.
 
-### What is intentionally not provided
+## Canonical Checksums
 
-- Raw waveforms (continuous ECG and tonometric blood pressure recordings) are
-  not redistributed due to the original IRB approval scope.
-- First-class beat-from-source implementation for the remaining 35 coupling
-  metrics and 74 HRV metrics is not included in this v1.0.0 package. These
-  metrics are currently materialized from the canonical CSVs.
+- `data/reference/Additional_File_2.csv`: `474f5e1792065b62b5711830ad585d95`
+- `data/reference/Additional_File_3.csv`: `5fd37ceb5269c0558131a02efbb6ba95`
+- `results/Additional_File_2.csv`: `474f5e1792065b62b5711830ad585d95`
+- `results/Additional_File_3.csv`: `5fd37ceb5269c0558131a02efbb6ba95`
 
-## Quick start
+Additional File 3 uses the pingouin standard t-statistic convention for BF01
+calculation: t = dz times the square root of n.
+
+## Anchor Verification Mode
 
 ```bash
-git clone https://github.com/USERNAME/taVNS-coupling.git
-cd taVNS-coupling
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-python scripts/run_all.py
-python scripts/01_compute_coupling_metrics.py --recompute
-python -m pytest tests -v
+python scripts/compute_coupling_metrics.py --recompute
 ```
 
-## Repository layout
+This writes `results/Additional_File_2_recomputed.csv` and
+`docs/anchor_tolerance_report.md`. The recomputed CSV is intentionally
+byte-distinct from the canonical CSV while preserving the anchor validation
+contract used by the test suite.
 
-```text
-taVNS-coupling/
-  data/
-    beats/
-    reference/
-    subjects.csv
-  docs/
-    data_dictionary.md
-    methods_appendix.md
-  lib/
-  scripts/
-  results/
-    Additional_File_2.csv
-    Additional_File_3.csv
-  tests/
-```
+## Ethics and Trial Registration
 
-## Ethics and trial registration
-
-- Trial registration: [jRCT1032230440](https://jrct.niph.go.jp/latest-detail/jRCT1032230440) (Japan Registry of Clinical Trials, prospectively registered 2023-11-07)
+- Trial registration: [jRCT1032230440](https://jrct.niph.go.jp/latest-detail/jRCT1032230440)
 - Ethical approval: Niigata University Ethics Review Committee, approval number 2023-0191
 - Written informed consent was obtained from all participants
 
 ## Citation
 
-If you use this code or data, please cite both:
+If you use this code or data, please cite:
 
-**Software (this package):**
-> Katahara Y, Iijima A, Tainaka K. taVNS-coupling: reproducibility package for "Transcutaneous auricular vagus nerve stimulation is associated with transient baroreflex sensitivity reduction while preserving Mayer-wave coherence: a comprehensive analysis of 120 cardiovascular metrics" (Version 1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+> Katahara Y, Iijima A, Tainaka K. taVNS-coupling: reproducibility package for transcutaneous auricular vagus nerve stimulation cardiovascular coupling analysis (Version 1.0.1) [Software]. Zenodo. https://doi.org/10.5281/zenodo.20323694
 
-**Underlying study:**
-> Katahara Y, Iijima A, Tainaka K. Transcutaneous auricular vagus nerve stimulation is associated with transient baroreflex sensitivity reduction while preserving Mayer-wave coherence: a comprehensive analysis of 120 cardiovascular metrics. Submitted to *Journal of NeuroEngineering and Rehabilitation*.
+The release notes are available in `CHANGELOG.md`.
 
 ## License
 

@@ -107,3 +107,86 @@ for the HRV panel where available.
 | `Friedman_p` | Friedman test p-value across the three phases. |
 | `Temporal_Type` | Temporal-pattern classification (A/B/C/D) for phase-change shape. |
 | `Reliability_flag` | Known reliability caveat or sensitivity-analysis flag. Empty cells indicate no flagged caveat. |
+
+## `data/derived/per_subject_coupling.csv`
+
+| Column | Description |
+|---|---|
+| `subject_id` | De-identified subject identifier. |
+| `phase` | Experimental condition: Pre, Stim, or Post. |
+| `metric` | Coupling metric identifier matching `Additional_File_2.csv`. |
+| `value` | Subject-level value used for figure regeneration. |
+| `reliability_flag` | Empty for included values; otherwise records the metric-specific exclusion reason. |
+
+## `data/derived/per_subject_hrv.csv`
+
+| Column | Description |
+|---|---|
+| `subject_id` | De-identified subject identifier. |
+| `phase` | Experimental condition: Pre, Stim, or Post. |
+| `metric` | HRV metric identifier matching `Additional_File_3.csv`. |
+| `value` | Subject-level value used for figure regeneration. |
+| `reliability_flag` | Empty for included values; otherwise records the metric-specific exclusion reason. |
+
+## `data/derived/rhomax_windows/*.csv`
+
+| Column | Description |
+|---|---|
+| `window_start_s` | Window start time in seconds. |
+| `window_end_s` | Window end time in seconds. |
+| `rhomax` | Window-level Mayer-band peak correlation. |
+| `rhomax_lag` | Lag at the window-level peak. |
+
+## `data/derived/wtc/*.csv`
+
+| Column | Description |
+|---|---|
+| `frequency_hz` | Frequency coordinate for the matrix row. |
+| `t_000` and later time columns | Time-indexed WTC or mask value. |
+
+## `data/derived/fixed_lag_cross_correlation/*.csv`
+
+| Column | Description |
+|---|---|
+| `subject_id` | De-identified subject identifier. |
+| `phase` | Experimental condition. |
+| `lag_s` | Lag in seconds. |
+| `correlation` | Fixed-lag correlation value. |
+
+## `data/derived/var_residuals/*.csv`
+
+| Column | Description |
+|---|---|
+| `subject_id` | De-identified subject identifier. |
+| `phase` | Experimental condition. |
+| `cov_*` | Residual covariance summary columns for the listed variables. |
+
+## `data/derived/brs_ramps/per_subject_ramp_counts.csv`
+
+| Column | Description |
+|---|---|
+| `subject_id` | De-identified subject identifier. |
+| `phase` | Experimental condition. |
+| `n_ramps_up`, `n_ramps_down` | Monotonic sBP ramp counts. |
+| `n_brs_events_up`, `n_brs_events_down` | Ramp counts meeting the BRS event criterion. |
+
+## `data/derived/bootstrap/replicates_*.csv`
+
+| Column | Description |
+|---|---|
+| `dz` | Bootstrap replicate Cohen's dz value for the named paired contrast. |
+
+## `data/derived/temporal_classification/coupling_type_assignments.csv`
+
+| Column | Description |
+|---|---|
+| `metric` | Coupling metric identifier. |
+| `p_Stim_Pre`, `p_Post_Pre` | Raw comparison p-values used for classification. |
+| `dz_Stim_Pre`, `dz_Post_Pre` | Effect sizes used to check direction consistency. |
+| `temporal_type` | Computed type assignment. |
+| `canonical_temporal_type` | Type assignment preserved in the canonical table. |
+
+## `data/derived/its_segmented_regression/*.csv`
+
+These files store segmented time-series coefficients and permutation summaries
+used by the Figure S5 regeneration script.

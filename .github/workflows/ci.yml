@@ -35,3 +35,6 @@ jobs:
 
       - name: Run tests
         run: python -m pytest tests -v
+
+      - name: Run figure regeneration tests
+        run: python -m pytest tests/test_figure_regeneration.py tests/test_no_hardcoded_arrays.py -v

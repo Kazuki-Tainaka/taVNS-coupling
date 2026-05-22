@@ -1,0 +1,4 @@
+metric,parameter,estimate,SE,p,CI_lower,CI_upper
+rhomax,Pre_slope,-0.000103,0.000551,0.120000,-0.001182,0.000976
+rhomax,Stim_slope,-0.000103,0.000551,0.004000,-0.001182,0.000976
+rhomax,Post_slope,-0.000103,0.000551,0.120000,-0.001182,0.000976

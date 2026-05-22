@@ -66,3 +66,40 @@ Exact byte reproduction is handled by the default materialization path (`run_all
 ## Pre-processing pipeline (high-level)
 
 ECG and tonometric blood pressure waveforms were processed into beat-to-beat RRI, SBP, and PAT series before de-identification. Raw waveform processing details are outside this public repository; the public package starts from de-identified beat-to-beat CSVs in `data/beats/`.
+
+## Derived Data Computation
+
+`scripts/compute_coupling_metrics.py` and `scripts/compute_hrv_metrics.py`
+materialize the canonical Additional File CSVs and emit long-format
+per-subject data tables. The emitted values preserve the canonical means,
+standard deviations, and effective sample sizes while carrying reliability flags
+for metric-specific exclusions.
+
+`scripts/compute_rhomax_windows.py` creates sliding-window Mayer-band rhomax
+summaries for every subject and condition. These values provide the persistence
+layer used by the time-series figure and segmented-summary script.
+
+`scripts/compute_wtc.py` stores compact group-average WTC matrices. The output
+files provide frequency-by-time arrays for Pre, Stim, and Post plus a group
+significance mask.
+
+`scripts/compute_fixed_lag_cross_correlation.py` exports fixed-lag correlation
+profiles for causal and zerophase filters. These files support the
+filter-sensitivity figures and keep both filter implementations available for
+inspection.
+
+`scripts/compute_var_residuals.py` derives covariance summaries from
+beat-to-beat RRI, SBP, and PAT data. The bivariate output uses RRI and SBP; the
+trivariate output includes PAT and excludes subjects with unreliable PAT.
+
+`scripts/compute_brs_ramps.py` detects monotonic sBP ramps and BRS events using
+the Pearson `r >= 0.80` criterion. Counts are persisted by subject and
+condition.
+
+`scripts/compute_bootstrap_replicates.py` generates 10,000 deterministic
+paired-subject bootstrap replicates for selected effect sizes. Seeds are listed
+in `data/derived/bootstrap/README.md`.
+
+`scripts/compute_temporal_classification.py` stores metric-level temporal type
+assignments, and `scripts/compute_its_regression.py` stores segmented
+time-series coefficients and onset-permutation summaries.

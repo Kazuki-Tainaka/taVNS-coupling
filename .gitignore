@@ -37,6 +37,7 @@ docs/anchor_failure_report.md
 results/Additional_File_2_recomputed.csv
 
 # Pipeline runtime outputs, not committed
+_build_log/
 results/_*.md
 results/_*.csv
 results/figures/

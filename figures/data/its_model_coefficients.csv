@@ -1,0 +1,17 @@
+metric,parameter,description,estimate,SE,z,p,CI_lower,CI_upper
+rhomax_3s,Intercept,β₀: baseline intercept,0.458541,0.033119,13.8452,1.3604103108362548e-43,0.393629,0.523454
+rhomax_3s,time_min,β₁: Pre-period slope (/min),0.064168,0.01031,6.2238,4.852800742057632e-10,0.043961,0.084376
+rhomax_3s,D_stim,β₂: level change at Stim onset,-0.037576,0.037314,-1.007,0.3139280253176965,-0.110711,0.035559
+rhomax_3s,time_since_stim,β₃: slope change during Stim (/min),-0.039063,0.01355,-2.8828,0.003940975398086191,-0.065621,-0.012505
+rhomax_3s,D_post,β₄: level change at Post onset,-0.004297,0.035985,-0.1194,0.904952754686416,-0.074826,0.066232
+rhomax_3s,time_since_post,β₅: slope change during Post (/min),-0.034217,0.012434,-2.7518,0.0059274591292909845,-0.058588,-0.009846
+rhomax_3s,sigma_u²,Random intercept variance,0.004596,,,,,
+rhomax_3s,sigma_e²,Residual variance,0.028701,,,,,
+BRS_seq,Intercept,β₀: baseline intercept,13.087165,2.157226,6.0667,1.3059553770126019e-09,8.859079,17.315251
+BRS_seq,time_min,β₁: Pre-period slope (/min),-0.18139,0.496458,-0.3654,0.7148359482544622,-1.154429,0.791649
+BRS_seq,D_stim,β₂: level change at Stim onset,-0.517542,1.794671,-0.2884,0.7730582275677818,-4.035032,2.999949
+BRS_seq,time_since_stim,β₃: slope change during Stim (/min),0.603488,0.650355,0.9279,0.353440166115509,-0.671183,1.87816
+BRS_seq,D_post,β₄: level change at Post onset,1.883132,1.719367,1.0952,0.27340835731628665,-1.486766,5.25303
+BRS_seq,time_since_post,β₅: slope change during Post (/min),-1.173921,0.594123,-1.9759,0.048167222325202076,-2.338381,-0.009462
+BRS_seq,sigma_u²,Random intercept variance,48.994318,,,,,
+BRS_seq,sigma_e²,Residual variance,65.522268,,,,,

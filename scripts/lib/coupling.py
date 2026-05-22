@@ -52,7 +52,7 @@ def compute_brsseq(
 ) -> dict:
     """Sequence-method BRS for Pre versus Stim.
 
-    Wraps the sequence-method audit calculation and returns a paired-effect
+    Wraps the sequence-method check calculation and returns a paired-effect
     summary. `mode` is one of `all`, `up`, or `down`.
     """
     key_map = {"all": "BRS_seq_all", "up": "BRS_seq_up", "down": "BRS_seq_down"}
@@ -108,12 +108,12 @@ def compute_rhomax_mayer(
     fs: float = 4.0,
     filter_mode: str = "causal",
 ) -> float:
-    """Mayer-band peak cross-correlation audit helper.
+    """Mayer-band peak cross-correlation check helper.
 
-    `filter_mode='causal'` follows the canonical direction; `zero_phase`
+    `filter_mode='causal'` follows the canonical direction; `zerophase`
     is available for sensitivity analysis.
     """
-    mode = "zerophase" if filter_mode in {"zero_phase", "zerophase", "filtfilt"} else "causal"
+    mode = "zerophase" if filter_mode in {"zerophase", "filtfilt"} else "causal"
     return float(rhomax(rri, sbp, filter_type=mode, fs=fs)["rhomax"])
 
 

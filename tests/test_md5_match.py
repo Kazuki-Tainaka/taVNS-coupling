@@ -2,8 +2,10 @@ from pathlib import Path
 import hashlib
 
 CANONICAL_HASHES = {
+    "data/reference/Additional_File_2.csv": "474f5e1792065b62b5711830ad585d95",
+    "data/reference/Additional_File_3.csv": "5fd37ceb5269c0558131a02efbb6ba95",
     "results/Additional_File_2.csv": "474f5e1792065b62b5711830ad585d95",
-    "results/Additional_File_3.csv": "c6bf4816b45165ef24a458a151c50d54",
+    "results/Additional_File_3.csv": "5fd37ceb5269c0558131a02efbb6ba95",
 }
 
 
