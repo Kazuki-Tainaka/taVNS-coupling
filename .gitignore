@@ -30,6 +30,8 @@ htmlcov/
 # Local scratch
 scratch/
 *.tmp
+_diag_*.log
+.venv_recheck/
 
 # Runtime output of --recompute, not committed
 docs/anchor_tolerance_report.md

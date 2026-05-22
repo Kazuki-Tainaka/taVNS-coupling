@@ -85,7 +85,7 @@ def draw_boxplot_panel(ax, data_by_condition, subjects, ylabel, title,
                        annotation, panel_label):
     """Draw boxplot with individual paired lines for 3 phases."""
     phases = ["Pre", "Stim", "Post"]
-    bp = ax.boxplot(data_by_condition, tick_labels=phases, widths=0.5,
+    bp = ax.boxplot(data_by_condition, labels=phases, widths=0.5,
                     patch_artist=True, showfliers=False)
     for patch, color in zip(bp['boxes'], PHASE_COLORS):
         patch.set_facecolor(color)

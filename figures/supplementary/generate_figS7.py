@@ -204,16 +204,34 @@ def main():
 
     # Panel C: rho_u box plots with paired lines.
     rho_pivot = raw.pivot_table(index="Subject", columns="Phase", values="rho_u")
-    rho_data = [rho_pivot[phase].dropna().values for phase in phases]
-    bp = ax_c.boxplot(
-        rho_data, tick_labels=phases, widths=0.5, patch_artist=True,
-        showfliers=False,
-        medianprops=dict(color=OI_ORANGE, linewidth=1.5),
-    )
+    rho_data = [
+        np.asarray(rho_pivot[phase].dropna().values, dtype=float)
+        for phase in phases
+    ]
     colors = [OI_BLUE, OI_ORANGE, OI_GREEN]
-    for patch, color in zip(bp["boxes"], colors):
-        patch.set_facecolor(color)
-        patch.set_alpha(0.4)
+    valid_idx = [
+        i for i, vals in enumerate(rho_data)
+        if vals.size > 0 and np.any(np.isfinite(vals))
+    ]
+
+    if valid_idx:
+        bp = ax_c.boxplot(
+            [rho_data[i] for i in valid_idx],
+            positions=[i + 1 for i in valid_idx],
+            labels=[phases[i] for i in valid_idx],
+            widths=0.5,
+            patch_artist=True,
+            showfliers=False,
+            medianprops=dict(color=OI_ORANGE, linewidth=1.5),
+        )
+        for patch, color in zip(bp["boxes"], [colors[i] for i in valid_idx]):
+            patch.set_facecolor(color)
+            patch.set_alpha(0.4)
+    else:
+        ax_c.text(
+            0.5, 0.5, "No valid data", ha="center", va="center",
+            transform=ax_c.transAxes,
+        )
 
     for _, row in rho_pivot.iterrows():
         vals = [row.get(phase, np.nan) for phase in phases]
@@ -222,23 +240,27 @@ def main():
                       linewidth=0.5, zorder=1)
 
     rng = np.random.default_rng(42)
-    for i, vals in enumerate(rho_data):
+    for i in valid_idx:
+        vals = rho_data[i]
         jitter = rng.uniform(-0.08, 0.08, len(vals))
         ax_c.scatter(np.full(len(vals), i + 1) + jitter, vals,
                      color=colors[i], s=14, alpha=0.65, zorder=5,
                      edgecolors="white", linewidth=0.3)
 
-    y_min = min(np.nanmin(vals) for vals in rho_data)
-    y_max = max(np.nanmax(vals) for vals in rho_data)
-    span = y_max - y_min
-    y_top = y_max + span * 0.13
-    h = span * 0.04
-    ax_c.plot([1, 1, 3, 3], [y_top, y_top + h, y_top + h, y_top],
-              lw=0.8, color="black")
-    ax_c.text(2, y_top + h * 1.25, "**", ha="center", va="bottom",
-              fontsize=12, fontweight="bold")
-
-    ax_c.set_ylim(y_min - span * 0.12, y_top + h * 2.5)
+    if valid_idx:
+        y_min = min(np.nanmin(rho_data[i]) for i in valid_idx)
+        y_max = max(np.nanmax(rho_data[i]) for i in valid_idx)
+        span = max(y_max - y_min, np.finfo(float).eps)
+        y_top = y_max + span * 0.13
+        h = span * 0.04
+        upper = y_top
+        if 0 in valid_idx and 2 in valid_idx:
+            ax_c.plot([1, 1, 3, 3], [y_top, y_top + h, y_top + h, y_top],
+                      lw=0.8, color="black")
+            ax_c.text(2, y_top + h * 1.25, "**", ha="center", va="bottom",
+                      fontsize=12, fontweight="bold")
+            upper = y_top + h * 2.5
+        ax_c.set_ylim(y_min - span * 0.12, upper)
     ax_c.set_ylabel(r"Residual cross-correlation ($\rho_u$)")
     ax_c.set_title("Residual Cross-Correlation\n"
                    r"($d_z$=$-$0.60, Post$-$Pre $p$=0.003)",
