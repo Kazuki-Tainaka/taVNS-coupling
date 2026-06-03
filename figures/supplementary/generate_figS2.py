@@ -49,7 +49,7 @@ AF3_PATH_CANDIDATES = [
 # Computed once and recorded here as a guard against accidentally loading
 # the older canonical CSV (MD5 c6bf4816b45165ef24a458a151c50d54), whose
 # BF01 column was generated with the deprecated dz-as-t convention.
-AF3_MD5 = '5fd37ceb5269c0558131a02efbb6ba95'
+AF3_MD5 = 'df4edfa0c874ddc684e19a43f8b60038'
 
 
 def load_af3_bf01() -> pd.DataFrame:
@@ -346,7 +346,7 @@ def main():
     print(f'(o) marker counts: Stim-Pre {sp_with_o}/{n_metrics}, '
           f'Post-Pre {pp_with_o}/{n_metrics}, '
           f'total {sp_with_o + pp_with_o}/{2 * n_metrics}')
-    print('Expected (AF3, MD5 5fd37c...): 44, 48, 92')
+    print('Expected (AF3, MD5 df4edf...): 44, 48, 92')
 
     plt.close(fig)
 

@@ -2,9 +2,9 @@ cff-version: 1.2.0
 message: "If you use this code or data, please cite both the software (Zenodo DOI below) and the underlying study (preferred-citation below)."
 title: "taVNS-coupling: reproducibility package for transcutaneous auricular vagus nerve stimulation cardiovascular coupling analysis"
 type: software
-version: 1.0.1
+version: 1.0.2
 doi: 10.5281/zenodo.20323694
-date-released: '2026-05-22'
+date-released: '2026-06-03'
 license: MIT
 repository-code: "https://github.com/Kazuki-Tainaka/taVNS-coupling"
 authors:

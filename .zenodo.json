@@ -1,7 +1,7 @@
 {
   "title": "taVNS-coupling: reproducibility package for transcutaneous auricular vagus nerve stimulation cardiovascular coupling analysis",
-  "version": "1.0.1",
-  "description": "Reproducibility package for a study examining acute effects of transcutaneous auricular vagus nerve stimulation (taVNS) on cardiovascular coupling in healthy adult males (n=18). Contains beat-to-beat derived data, analysis pipeline, canonical results tables corresponding to the manuscript's Additional Files 2 and 3, and an anchor-metric tolerance verification mode. Raw waveform data is not included due to IRB restrictions.",
+  "version": "1.0.2",
+  "description": "Reproducibility package for a study examining acute effects of transcutaneous auricular vagus nerve stimulation (taVNS) on cardiovascular coupling in healthy adult males (n=18). Contains beat-to-beat derived data, analysis pipeline, canonical results tables corresponding to the manuscript's Additional Files 2 and 3, and an anchor-metric tolerance verification mode. Version 1.0.2 unifies the HRV-panel Benjamini-Hochberg FDR correction scope to per-contrast within-panel correction. Raw waveform data is not included due to IRB restrictions.",
   "creators": [
     {
       "name": "Katahara, Yusuke",

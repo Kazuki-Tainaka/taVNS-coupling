@@ -57,9 +57,9 @@ figure-to-data dependency matrix.
 ## Canonical Checksums
 
 - `data/reference/Additional_File_2.csv`: `474f5e1792065b62b5711830ad585d95`
-- `data/reference/Additional_File_3.csv`: `5fd37ceb5269c0558131a02efbb6ba95`
+- `data/reference/Additional_File_3.csv`: `df4edfa0c874ddc684e19a43f8b60038`
 - `results/Additional_File_2.csv`: `474f5e1792065b62b5711830ad585d95`
-- `results/Additional_File_3.csv`: `5fd37ceb5269c0558131a02efbb6ba95`
+- `results/Additional_File_3.csv`: `df4edfa0c874ddc684e19a43f8b60038`
 
 Additional File 3 uses the pingouin standard t-statistic convention for BF01
 calculation: t = dz times the square root of n.
@@ -85,7 +85,7 @@ contract used by the test suite.
 
 If you use this code or data, please cite:
 
-> Katahara Y, Iijima A, Tainaka K. taVNS-coupling: reproducibility package for transcutaneous auricular vagus nerve stimulation cardiovascular coupling analysis (Version 1.0.1) [Software]. Zenodo. https://doi.org/10.5281/zenodo.20323694
+> Katahara Y, Iijima A, Tainaka K. taVNS-coupling: reproducibility package for transcutaneous auricular vagus nerve stimulation cardiovascular coupling analysis (Version 1.0.2) [Software]. Zenodo. https://doi.org/10.5281/zenodo.20323694
 
 The release notes are available in `CHANGELOG.md`.
 
