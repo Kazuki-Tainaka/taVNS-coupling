@@ -1,0 +1,19 @@
+# Public tier B — the 54 approved pseudonymised derived beat tables live under
+# data/beats/ inside this repository. The default TAVNS_DATA_ROOT is therefore
+# the repository root itself, and no separate local file is required.
+data_root: "."
+
+# Expected layout for the public tier B analyses:
+# data/beats/S01_Pre.csv ... data/beats/S18_Post.csv
+#   Columns: beat_idx, RRI_ms, SBP_mmHg, PAT_ms
+#   18 participants x 3 phases (Pre, Stim, Post) = 54 files.
+
+# Controlled tier only — create data_paths.local.yaml (Git-ignored) inside a
+# controlled workspace and point data_root at the controlled root:
+# data_root: "<CONTROLLED_DATA_ROOT_OUTSIDE_THIS_REPOSITORY>"
+
+# Expected controlled layout beneath a controlled data_root:
+# paired/               participant-level paired-beat CSV files (upstream source)
+# raw/                  raw recordings, when authorized
+# revision_reference/   controlled reference outputs used by comparator code
+# nonlinear_reference/  controlled nonlinear-analysis reference inventory

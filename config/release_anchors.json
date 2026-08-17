@@ -1,0 +1,56 @@
+{
+  "central_brs": {
+    "n": 18,
+    "mean_difference": -2.050708187408464,
+    "negative_participants": 17,
+    "bca95_low_display": -3.81,
+    "bca95_high_display": -1.10,
+    "wilcoxon_p": 0.0000229,
+    "cohens_dz": -0.74
+  },
+  "brs_landscape": {
+    "settings_per_direction": 72,
+    "reference_all": -2.05071,
+    "median_all": -0.9377935,
+    "minimum_all": -2.58142,
+    "all_negative": 67,
+    "up_negative": 54,
+    "down_negative": 67,
+    "all_up_down_negative_total": 188,
+    "positive_all": 5,
+    "maximum_positive_all": 0.2445191129487214,
+    "minimum_p_among_positive_all": 0.459,
+    "evaluable_n_min": 11,
+    "evaluable_n_max": 18
+  },
+  "coherence": {
+    "reference_mean_difference": 0.016346,
+    "reference_wilcoxon_p": 0.6705245971679688,
+    "sensitivity_mean_difference": 0.024671833333333327,
+    "sensitivity_wilcoxon_p": 0.6705245971679688,
+    "pre_significant": 14,
+    "stim_significant": 15,
+    "post_significant": 15,
+    "mcnemar_p": 1.0,
+    "cochran_q_p": 0.846
+  },
+  "haemodynamics": {
+    "mean_sbp_stim_minus_pre": 6.11738,
+    "wilcoxon_p": 0.00475,
+    "bh_q": 0.038
+  },
+  "native_var": {
+    "unique_fits": 54,
+    "stable": 54,
+    "whiteness_pass": 42,
+    "normality_pass": 7,
+    "both_pass": 4
+  },
+  "public_artifact_sha256": {
+    "supplementary_data_1.csv": "DCDCA12973A8E3621EF1BA5AE8370C5383270421B26D8FD46545F823AB813E34",
+    "supplementary_data_2.csv": "E0DDDDAC57C8BCF4A1E6AE811835C6A6E6414F43955E109206EC23214C7F4B69",
+    "supplementary_data_3.csv": "930053C9C303451C5FF9C861F93DF54B3A293A8034BE5950D1F2B8C48A3226B5",
+    "supplementary_figure_s3.jpg": "810BD5850E0059847B3223227AC71E4D84F2A8643D84619A2B2D440CA4A9EC60",
+    "supplementary_figure_s3_generator.py": "52EC4635806A58BA1E969B1DE9BAD0E7ECBA02BC5602AB7CA14060B54C508D0B"
+  }
+}

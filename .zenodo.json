@@ -1,7 +1,7 @@
 {
-  "title": "taVNS-coupling: reproducibility package for transcutaneous auricular vagus nerve stimulation cardiovascular coupling analysis",
-  "version": "1.0.2",
-  "description": "Reproducibility package for a study examining acute effects of transcutaneous auricular vagus nerve stimulation (taVNS) on cardiovascular coupling in healthy adult males (n=18). Contains beat-to-beat derived data, analysis pipeline, canonical results tables corresponding to the manuscript's Additional Files 2 and 3, and an anchor-metric tolerance verification mode. Version 1.0.2 unifies the HRV-panel Benjamini-Hochberg FDR correction scope to per-contrast within-panel correction. Raw waveform data is not included due to IRB restrictions.",
+  "title": "Analysis code for \"Acute transcutaneous auricular vagus nerve stimulation is associated with lower baroreflex sensitivity without detectable Mayer-wave coherence change: an exploratory study\"",
+  "version": "1.1.0",
+  "description": "Scientific Reports major-revision analysis code, fixed configurations, tests, synthetic validation, aggregate publication source tables under expected_outputs/, and 54 pseudonymised participant-level derived beat-to-beat CSV tables under data/beats/ (18 participants x 3 phases; columns beat_idx, RRI_ms, SBP_mmHg, PAT_ms; all fields numeric and finite). Software / analysis source (src/, scripts/, tests/, preprocessing_matlab/, synthetic_fixtures/, top-level LICENSE) is distributed under the MIT License. All derived and publication data tables under data/beats/ and expected_outputs/ are distributed under CC BY 4.0 as stated in data/LICENSE. The two licenses apply to distinct file classes; derived data are not covered by MIT. Raw ECG and continuous blood-pressure waveforms, upstream paired-source paired-beat streams, and semi-manual event-detection intermediates are not included. Repository: https://github.com/Kazuki-Tainaka/taVNS-coupling. Zenodo concept DOI: 10.5281/zenodo.20323694. Trial identifier: jRCT1032230440.",
   "creators": [
     {
       "name": "Katahara, Yusuke",
@@ -18,20 +18,27 @@
   ],
   "license": "MIT",
   "upload_type": "software",
+  "access_right": "open",
   "keywords": [
     "taVNS",
     "transcutaneous auricular vagus nerve stimulation",
     "baroreflex sensitivity",
-    "heart rate variability",
     "cardiovascular coupling",
     "Mayer waves",
     "reproducibility"
   ],
   "related_identifiers": [
     {
-      "identifier": "https://jrct.niph.go.jp/en-latest-detail/jRCT1032230440",
+      "identifier": "10.5281/zenodo.20323694",
+      "relation": "isVersionOf",
+      "scheme": "doi",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "jRCT1032230440",
       "relation": "isDocumentedBy",
-      "scheme": "url"
+      "scheme": "other",
+      "resource_type": "other"
     }
   ]
 }

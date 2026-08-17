@@ -1,0 +1,9 @@
+subject,phase,beat_time_s,RRI_ms,SBP_mmHg,PAT_ms,synthetic_only
+SYN001,Pre,0.0,800,120,180,true
+SYN001,Pre,0.8,805,121,181,true
+SYN001,Pre,1.6,810,122,179,true
+SYN001,Pre,2.4,815,123,180,true
+SYN001,Stim,300.0,800,126,181,true
+SYN001,Stim,300.8,803,127,182,true
+SYN001,Stim,301.6,806,128,180,true
+SYN001,Stim,302.4,809,129,181,true

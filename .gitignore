@@ -1,53 +1,35 @@
-# Python
 __pycache__/
 *.py[cod]
-*.pyc
-*$py.class
-*.so
-.Python
-build/
-dist/
-*.egg-info/
-
-# Virtual environments
-venv/
-env/
-.venv/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Test / coverage
 .pytest_cache/
-.coverage
-htmlcov/
+.venv/
+validation_figures/
+generated_outputs/
+controlled_data_not_included/
+controlled_revision_not_included/
+controlled_outputs/
+outputs/
 
-# Local scratch
-scratch/
+# The 54 approved pseudonymised derived beat tables under data/beats/ are
+# permitted and version-controlled. Raw physiological recordings, upstream
+# paired-source streams, and any acquisition-format binaries stay out.
+/data/raw/
+/data/paired/
+/data/beats/paired_beats_*.csv
+paired_beats_*.csv
+*.mat
+*.acq
+*.edf
+
+# Local paths, temporary files, and credentials
+config/data_paths.local.yaml
+data_paths.local.yaml
+tmp/
+temp/
 *.tmp
-_diag_*.log
-.venv_recheck/
-
-# Runtime output of --recompute, not committed
-docs/anchor_tolerance_report.md
-docs/anchor_failure_report.md
-
-# Build artifacts from compute_*.py pipeline
-results/Additional_File_2_recomputed.csv
-results/*_recomputed.csv
-
-# Pipeline runtime outputs, not committed
-_build_log/
-results/_*.md
-results/_*.csv
-results/figures/
-results/tables/
-
-# Archives (not committed, generated for distribution)
-*.zip
+*.pem
+*.key
+credentials.*
+secrets.*
+*.env
+.env
+.env.*

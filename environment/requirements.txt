@@ -1,0 +1,9 @@
+numpy>=2.3,<2.4
+pandas>=2.3,<2.4
+scipy>=1.16,<1.17
+statsmodels>=0.14,<0.15
+matplotlib>=3.10,<3.11
+pingouin>=0.5,<0.6
+Pillow>=11,<12
+CairoSVG>=2.9,<3
+pytest>=9,<10

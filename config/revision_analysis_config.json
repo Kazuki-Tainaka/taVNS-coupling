@@ -1,0 +1,55 @@
+{
+  "analysis_release_date": "2026-08-17",
+  "subjects": 18,
+  "phases_seconds": {
+    "Pre": [0, 300],
+    "Stim": [300, 600],
+    "Post": [600, 900]
+  },
+  "reference_brs": {
+    "sequence_enumeration": "maximal_non_overlapping_monotonic_SBP_ramps",
+    "lag_beats": 1,
+    "correlation_threshold": 0.8,
+    "correlation_inclusive": true,
+    "sbp_increment_threshold_mmHg_per_beat": 1.0,
+    "sbp_increment_inclusive": true,
+    "minimum_sequence_length_beats": 3,
+    "aggregation": "mean",
+    "require_directional_rri_monotonicity": false
+  },
+  "brs_full_factorial": {
+    "lag_beats": [0, 1, 2],
+    "correlation_threshold": [0.7, 0.8, 0.85],
+    "sbp_increment_threshold_mmHg_per_beat": [0.5, 1.0],
+    "minimum_sequence_length_beats": [3, 4],
+    "aggregation": ["mean", "median"],
+    "settings": 72
+  },
+  "coherence_reference": {
+    "resampling_hz": 4.0,
+    "band_hz": [0.08, 0.12],
+    "window": "hann",
+    "nperseg": 512,
+    "noverlap": 256
+  },
+  "coherence_segment_length_sensitivity": {
+    "resampling_hz": 4.0,
+    "band_hz": [0.08, 0.12],
+    "window": "hann",
+    "nperseg": 256,
+    "noverlap": 128
+  },
+  "native_paired_beat_var": {
+    "candidate_order_min": 1,
+    "candidate_order_max": 10,
+    "selection": "AIC",
+    "constant": true,
+    "within_phase_detrending": "linear",
+    "within_phase_standardization": "z_score_population_sd_ddof_0"
+  },
+  "paired_bootstrap": {
+    "resampling_unit": "participant_paired_record",
+    "resamples": 10000,
+    "interval": "BCa_95_percent"
+  }
+}

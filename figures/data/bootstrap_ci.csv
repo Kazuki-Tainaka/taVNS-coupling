@@ -1,7 +1,0 @@
-metric,n,dz_observed,ci_lower,ci_upper,excludes_zero,method
-rhomax_full,18,1.0501,0.3617,1.5776,True,BCa
-rhomax_3s,18,1.7622,1.2604,2.3678,True,BCa
-BRS_seq_all,18,-0.7402,-0.9935,-0.4839,True,BCa
-GC3_F_RRI_to_PTT,18,0.7366,0.3155,1.2047,True,BCa
-GC3_F_SBP_to_RRI,18,0.5271,-0.1569,1.0831,False,BCa
-PDI,18,2.0874,1.4379,2.9274,True,BCa
