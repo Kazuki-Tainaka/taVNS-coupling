@@ -43,11 +43,33 @@ EXPECTED_BEATS_HEADER = ("beat_idx", "RRI_ms", "SBP_mmHg", "PAT_ms")
 
 
 def sha256_file(path: Path) -> str:
+    """Raw byte SHA-256. Never EOL-normalised. Authoritative for beat tables
+    and binary artefacts.
+    """
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         while chunk := handle.read(1024 * 1024):
             digest.update(chunk)
     return digest.hexdigest().upper()
+
+
+def sha256_file_eol_normalized(path: Path) -> str:
+    """EOL-normalised byte SHA-256 for cross-platform portability of
+    repository-authored text anchors.
+
+    Normalisation is applied to an in-memory copy only; the file on disk is
+    never rewritten. The order is: CRLF -> LF, then any remaining bare CR
+    -> LF, then SHA-256. This is used only for the four reviewed text
+    anchors listed under docs/EOL_POLICY.md.
+    """
+    data = path.read_bytes()
+    normalised = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(normalised).hexdigest().upper()
+
+
+# Hash-mode identifiers used in config/release_anchors.json.
+HASH_MODE_RAW = "raw_bytes"
+HASH_MODE_EOL_LF = "eol_normalized_lf_bytes"
 
 
 def require(condition: bool, message: str) -> None:
@@ -74,20 +96,93 @@ def check_syntax() -> str:
     return f"{len(paths)} Python files compiled in memory"
 
 
-def check_public_artifact_hashes(anchors: dict[str, object]) -> str:
+def _relative_public_artifact_locations() -> dict[str, str]:
+    """Repository-relative paths of the five reviewed public artefacts.
+
+    These are relative to the repository root so the check can be re-executed
+    against an extracted GitHub source archive by supplying a different root
+    (see check_public_artifact_hashes(anchors, root=...)).
+    """
+    return {
+        "supplementary_data_1.csv":
+            "expected_outputs/publication_source_data/supplementary_data_1.csv",
+        "supplementary_data_2.csv":
+            "expected_outputs/publication_source_data/supplementary_data_2.csv",
+        "supplementary_data_3.csv":
+            "expected_outputs/publication_source_data/"
+            "supplementary_data_3_brs_sensitivity_and_coupling_significance.csv",
+        "supplementary_figure_s3.jpg":
+            "figures/supplementary_figure_s3_brs_specification_landscape.jpg",
+        "supplementary_figure_s3_generator.py":
+            "scripts/generate_supplementary_figure_s3.py",
+    }
+
+
+def _resolve_artifact_hash_entry(name: str, entry: object) -> tuple[str, str]:
+    """Return (expected_hash_upper, mode) for one artefact entry.
+
+    The v1.1.1 anchor schema stores each artefact as a nested object with
+    explicit fields ``sha256`` and ``mode``. A bare-string entry is treated
+    as legacy ``raw_bytes`` for defensive backward-compatibility. The two
+    accepted modes are ``raw_bytes`` and ``eol_normalized_lf_bytes``.
+    """
+    if isinstance(entry, str):
+        return entry.upper(), HASH_MODE_RAW
+    require(
+        isinstance(entry, dict),
+        f"public_artifact_sha256[{name}] must be object or string",
+    )
+    assert isinstance(entry, dict)
+    require(
+        "sha256" in entry and "mode" in entry,
+        f"public_artifact_sha256[{name}] missing 'sha256' or 'mode'",
+    )
+    expected = entry["sha256"]
+    mode = entry["mode"]
+    require(
+        isinstance(expected, str),
+        f"public_artifact_sha256[{name}].sha256 must be string",
+    )
+    require(
+        mode in (HASH_MODE_RAW, HASH_MODE_EOL_LF),
+        f"public_artifact_sha256[{name}].mode must be one of "
+        f"'{HASH_MODE_RAW}' | '{HASH_MODE_EOL_LF}'",
+    )
+    return expected.upper(), mode
+
+
+def check_public_artifact_hashes(
+    anchors: dict[str, object],
+    root: Path | None = None,
+) -> str:
+    """Verify the five reviewed public artefacts against their anchors.
+
+    ``root`` defaults to the in-tree repository root (unchanged CLI
+    behaviour). Archive-portability regression tests supply an alternate
+    root (an extracted GitHub source archive tree) so the same gate can be
+    exercised against materialised release archives.
+    """
     hashes = anchors["public_artifact_sha256"]
     assert isinstance(hashes, dict)
-    locations = {
-        "supplementary_data_1.csv": PUBLIC_DATA / "supplementary_data_1.csv",
-        "supplementary_data_2.csv": PUBLIC_DATA / "supplementary_data_2.csv",
-        "supplementary_data_3.csv": DATA3_PATH,
-        "supplementary_figure_s3.jpg": S3_ARTWORK,
-        "supplementary_figure_s3_generator.py": S3_GENERATOR,
-    }
-    for name, path in locations.items():
+    base = ROOT if root is None else Path(root)
+    relative_locations = _relative_public_artifact_locations()
+    for name, relative in relative_locations.items():
+        path = base / relative
         require(path.is_file(), f"missing authoritative file: {name}")
-        require(sha256_file(path) == hashes[name], f"SHA-256 mismatch: {name}")
-    return f"{len(locations)} reviewed public artifact hashes match"
+        expected_hash, mode = _resolve_artifact_hash_entry(name, hashes[name])
+        if mode == HASH_MODE_EOL_LF:
+            actual = sha256_file_eol_normalized(path)
+        else:
+            actual = sha256_file(path)
+        require(
+            actual == expected_hash,
+            f"SHA-256 mismatch ({mode}): {name} "
+            f"(expected {expected_hash}, got {actual})",
+        )
+    return (
+        f"{len(relative_locations)} reviewed public artifact hashes match "
+        f"(per-anchor hash mode honoured)"
+    )
 
 
 def check_central_brs(frame: pd.DataFrame, anchors: dict[str, object]) -> str:
@@ -319,7 +414,7 @@ def check_nonlinear_sensitivity() -> str:
 
 def check_metadata() -> str:
     metadata = json.loads((ROOT / ".zenodo.json").read_text(encoding="utf-8"))
-    require(metadata["version"] == "1.1.0", "metadata version")
+    require(metadata["version"] == "1.1.1", "metadata version")
     require(metadata["upload_type"] == "software", "metadata resource type")
     require(metadata["license"] == "MIT", "metadata license")
     require(len(metadata["creators"]) == 3, "metadata creators")

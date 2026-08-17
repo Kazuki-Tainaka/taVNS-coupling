@@ -46,11 +46,35 @@
     "normality_pass": 7,
     "both_pass": 4
   },
+  "public_artifact_sha256_schema": {
+    "version": "1.1.1",
+    "modes": [
+      "raw_bytes",
+      "eol_normalized_lf_bytes"
+    ],
+    "policy_document": "docs/EOL_POLICY.md",
+    "notes": "Each entry under public_artifact_sha256 is an object with 'sha256' and 'mode'. The eol_normalized_lf_bytes mode applies CRLF->LF then bare CR->LF in memory before SHA-256 and is used only for the four named repository-authored text anchors. All other artefacts (binary and data/beats/*.csv) are hashed on raw bytes."
+  },
   "public_artifact_sha256": {
-    "supplementary_data_1.csv": "DCDCA12973A8E3621EF1BA5AE8370C5383270421B26D8FD46545F823AB813E34",
-    "supplementary_data_2.csv": "E0DDDDAC57C8BCF4A1E6AE811835C6A6E6414F43955E109206EC23214C7F4B69",
-    "supplementary_data_3.csv": "930053C9C303451C5FF9C861F93DF54B3A293A8034BE5950D1F2B8C48A3226B5",
-    "supplementary_figure_s3.jpg": "810BD5850E0059847B3223227AC71E4D84F2A8643D84619A2B2D440CA4A9EC60",
-    "supplementary_figure_s3_generator.py": "52EC4635806A58BA1E969B1DE9BAD0E7ECBA02BC5602AB7CA14060B54C508D0B"
+    "supplementary_data_1.csv": {
+      "sha256": "68876319031E9BB6987C8F4713D8FEBAEBB810753061A6994ED2BE4AE287E39D",
+      "mode": "eol_normalized_lf_bytes"
+    },
+    "supplementary_data_2.csv": {
+      "sha256": "D55E2C92D813218DF5A75CC89B010FD83FEE1AEB423C5BF5FCBC703900CBE931",
+      "mode": "eol_normalized_lf_bytes"
+    },
+    "supplementary_data_3.csv": {
+      "sha256": "5EE2BCEE2A2E66CDFBC55A51C1D8332CAAFF87A458F5165E782B32F27128BDB2",
+      "mode": "eol_normalized_lf_bytes"
+    },
+    "supplementary_figure_s3.jpg": {
+      "sha256": "810BD5850E0059847B3223227AC71E4D84F2A8643D84619A2B2D440CA4A9EC60",
+      "mode": "raw_bytes"
+    },
+    "supplementary_figure_s3_generator.py": {
+      "sha256": "52EC4635806A58BA1E969B1DE9BAD0E7ECBA02BC5602AB7CA14060B54C508D0B",
+      "mode": "eol_normalized_lf_bytes"
+    }
   }
 }

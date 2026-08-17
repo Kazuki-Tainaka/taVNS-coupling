@@ -1,0 +1,93 @@
+# taVNS-coupling — canonical line-ending policy
+#
+# The repository authoritatively stores canonical LF for repository-authored
+# text so that per-file SHA-256 anchors are portable across Linux, macOS, and
+# Windows checkouts regardless of a user's local core.autocrlf setting.
+#
+# See docs/EOL_POLICY.md for the full rationale, the enumeration of the four
+# reviewed text anchors that are hashed with an explicit EOL-normalized helper,
+# and the extraction-based GitHub source archive verification procedure.
+#
+# The 54 author-approved participant-level derived beat tables under
+# data/beats/ are versioned as binary (byte-for-byte) with EOL explicitly
+# unset so that Git's default eol=lf cannot influence them. Their raw
+# SHA-256 values, sizes, and Git blob object IDs remain identical to v1.1.0
+# (54/54).
+
+# ---------------------------------------------------------------------------
+# 1. Default for repository-authored text: canonical LF in working tree and
+#    in Git blob storage. Applies to code, docs, configuration, notebooks,
+#    and CSV tables that are treated as text.
+# ---------------------------------------------------------------------------
+* text=auto eol=lf
+
+# ---------------------------------------------------------------------------
+# 2. Repository-authored source code and configuration — force LF, be
+#    diffable as text.
+# ---------------------------------------------------------------------------
+*.py         text eol=lf
+*.md         text eol=lf
+*.txt        text eol=lf
+*.rst        text eol=lf
+*.json       text eol=lf
+*.yaml       text eol=lf
+*.yml        text eol=lf
+*.toml       text eol=lf
+*.cfg        text eol=lf
+*.ini        text eol=lf
+*.ps1        text eol=lf
+*.sh         text eol=lf
+*.m          text eol=lf
+*.tex        text eol=lf
+*.bib        text eol=lf
+*.csv        text eol=lf
+*.svg        text eol=lf
+
+# ---------------------------------------------------------------------------
+# 3. Author-approved derived beat tables under data/beats/ — treat as binary
+#    (no text conversion, no EOL munging, no diff smudging). EOL is
+#    explicitly unset so the default `eol=lf` from rule 1 cannot leak in.
+#    Their raw SHA-256 values, file sizes, Git blob OIDs, and CSV headers
+#    must remain exactly identical to v1.1.0.
+# ---------------------------------------------------------------------------
+data/beats/*.csv binary -eol
+
+# ---------------------------------------------------------------------------
+# 4. Common binary asset types — never EOL-convert, never text-diff.
+#    `binary` sets `-text -diff -merge`; `-eol` explicitly unsets the
+#    default `eol=lf` inherited from rule 1 so the byte-frozen policy is
+#    complete.
+# ---------------------------------------------------------------------------
+*.jpg   binary -eol
+*.jpeg  binary -eol
+*.png   binary -eol
+*.tif   binary -eol
+*.tiff  binary -eol
+*.gif   binary -eol
+*.pdf   binary -eol
+*.ico   binary -eol
+*.mp4   binary -eol
+*.mov   binary -eol
+*.zip   binary -eol
+*.gz    binary -eol
+*.tar   binary -eol
+*.7z    binary -eol
+*.xz    binary -eol
+*.bz2   binary -eol
+*.mat   binary -eol
+*.mlx   binary -eol
+*.npy   binary -eol
+*.npz   binary -eol
+*.h5    binary -eol
+*.hdf5  binary -eol
+*.wav   binary -eol
+*.bin   binary -eol
+*.dat   binary -eol
+*.xdf   binary -eol
+*.set   binary -eol
+*.eeg   binary -eol
+*.cnt   binary -eol
+*.vhdr  binary -eol
+*.vmrk  binary -eol
+*.acq   binary -eol
+*.edf   binary -eol
