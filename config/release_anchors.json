@@ -47,7 +47,7 @@
     "both_pass": 4
   },
   "public_artifact_sha256_schema": {
-    "version": "1.1.1",
+    "version": "1.1.2",
     "modes": [
       "raw_bytes",
       "eol_normalized_lf_bytes"
@@ -57,7 +57,7 @@
   },
   "public_artifact_sha256": {
     "supplementary_data_1.csv": {
-      "sha256": "68876319031E9BB6987C8F4713D8FEBAEBB810753061A6994ED2BE4AE287E39D",
+      "sha256": "846C039FF7E302D9035AD2B4165E36BD28A8F68D1AA640F9B20697BAA79E7828",
       "mode": "eol_normalized_lf_bytes"
     },
     "supplementary_data_2.csv": {
@@ -65,7 +65,7 @@
       "mode": "eol_normalized_lf_bytes"
     },
     "supplementary_data_3.csv": {
-      "sha256": "5EE2BCEE2A2E66CDFBC55A51C1D8332CAAFF87A458F5165E782B32F27128BDB2",
+      "sha256": "6BCA6A81F5D594F20D1BAA3152E5A67827C5878FBC80E027CFC08A81D18FD65F",
       "mode": "eol_normalized_lf_bytes"
     },
     "supplementary_figure_s3.jpg": {

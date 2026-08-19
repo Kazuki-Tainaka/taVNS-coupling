@@ -21,6 +21,8 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+from synchronize_v1_1_2_publication_outputs import verify_repository_outputs
+
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED = ROOT / "expected_outputs"
@@ -30,6 +32,7 @@ DATA3_PATH = (
     / "supplementary_data_3_brs_sensitivity_and_coupling_significance.csv"
 )
 ANCHORS_PATH = ROOT / "config" / "release_anchors.json"
+OUTPUT_SYNC_CONFIG = ROOT / "config" / "v1_1_2_publication_output_sync.json"
 S3_ARTWORK = (
     ROOT / "figures" / "supplementary_figure_s3_brs_specification_landscape.jpg"
 )
@@ -121,7 +124,7 @@ def _relative_public_artifact_locations() -> dict[str, str]:
 def _resolve_artifact_hash_entry(name: str, entry: object) -> tuple[str, str]:
     """Return (expected_hash_upper, mode) for one artefact entry.
 
-    The v1.1.1 anchor schema stores each artefact as a nested object with
+    The v1.1.2 anchor schema stores each artefact as a nested object with
     explicit fields ``sha256`` and ``mode``. A bare-string entry is treated
     as legacy ``raw_bytes`` for defensive backward-compatibility. The two
     accepted modes are ``raw_bytes`` and ``eol_normalized_lf_bytes``.
@@ -384,7 +387,43 @@ def check_native_var(frame: pd.DataFrame, anchors: dict[str, object]) -> str:
         pd.to_numeric(fits["candidate_order_max"], errors="raise").eq(10).all(),
         "VAR order maximum",
     )
-    return "54/54 successful and stable; diagnostics 42/54, 7/54, 4/54"
+    past_rri = rows.loc[rows["direction"].eq("past_RRI_to_SBP")]
+    require(len(past_rri) == 54, "past-RRI-to-SBP participant matrix size")
+    require(past_rri["nominal_significant"].eq("True").all(), "nominal matrix")
+    require(past_rri["fdr_significant"].eq("True").all(), "FDR matrix")
+    q_rows = frame.loc[
+        frame["analysis_family"].eq("GC_significance_native_paired_beats")
+        & frame["record_type"].eq("paired_prevalence_comparison")
+        & frame["direction"].eq("past_RRI_to_SBP")
+        & frame["contrast"].eq("Pre-Stim-Post")
+        & frame["test"].eq("Cochran_Q_chi_square")
+    ]
+    require(len(q_rows) == 2, "degenerate Cochran Q row count")
+    require(q_rows["value"].eq("NA").all(), "degenerate Cochran Q value")
+    require(q_rows["statistic"].eq("NA").all(), "degenerate Cochran Q statistic")
+    require(q_rows["p_value"].eq("NA").all(), "degenerate Cochran Q p")
+    require(q_rows["status"].eq("not_estimable").all(), "degenerate Q status")
+    require(q_rows["exact_or_asymptotic"].eq("NA").all(), "degenerate Q method")
+    require(
+        q_rows["NA_reason"]
+        .eq("no_within_participant_variation_across_phases")
+        .all(),
+        "degenerate Q reason",
+    )
+    mcnemar = frame.loc[
+        frame["analysis_family"].eq("GC_significance_native_paired_beats")
+        & frame["record_type"].eq("paired_prevalence_comparison")
+        & frame["direction"].eq("past_RRI_to_SBP")
+        & frame["contrast"].eq("Stim-vs-Pre")
+        & frame["test"].eq("McNemar_exact_conditional_binomial")
+    ]
+    require(len(mcnemar) == 2, "past-RRI-to-SBP McNemar row count")
+    require(mcnemar["p_value"].eq("1").all(), "McNemar p=1")
+    require(mcnemar["status"].eq("estimable").all(), "McNemar estimability")
+    return (
+        "54/54 successful and stable; diagnostics 42/54, 7/54, 4/54; "
+        "past-RRI-to-SBP Q is not estimable while McNemar p=1 remains estimable"
+    )
 
 
 def check_methods_matched_brs() -> str:
@@ -393,7 +432,34 @@ def check_methods_matched_brs() -> str:
     rows = frame.loc[frame["branch"].isin(branches)]
     require(set(rows["branch"]) == set(branches), "methods branch set")
     require((rows["mean_difference"] < 0).all(), "methods branch direction")
-    return "A0_MAX, A1_MAX, A0_OVERLAP, A1_OVERLAP all remain negative"
+    reference = one_row(frame, frame["branch"].eq("REF"), "methods REF")
+    require(
+        np.isclose(float(reference["mean_difference"]), -2.0507081874084636),
+        "methods REF mean",
+    )
+    require(
+        np.isclose(float(reference["mean_difference_ci_low"]), -3.8125937386490705),
+        "methods REF CI low",
+    )
+    require(
+        np.isclose(float(reference["mean_difference_ci_high"]), -1.09512491343104),
+        "methods REF CI high",
+    )
+    return (
+        "REF uses the canonical central BCa interval; A0_MAX, A1_MAX, "
+        "A0_OVERLAP, and A1_OVERLAP all remain negative"
+    )
+
+
+def check_v1_1_2_publication_output_sync() -> str:
+    """Run the full pinned-output semantic and provenance validator."""
+    config = json.loads(OUTPUT_SYNC_CONFIG.read_text(encoding="utf-8"))
+    hashes = verify_repository_outputs(config)
+    require(len(hashes) == 4, "publication-output hash count")
+    return (
+        "Data 1 and Data 3 match the reviewed submission copies; canonical "
+        "BRS and methods-text-matched REF provenance match"
+    )
 
 
 def check_nonlinear_sensitivity() -> str:
@@ -414,7 +480,7 @@ def check_nonlinear_sensitivity() -> str:
 
 def check_metadata() -> str:
     metadata = json.loads((ROOT / ".zenodo.json").read_text(encoding="utf-8"))
-    require(metadata["version"] == "1.1.1", "metadata version")
+    require(metadata["version"] == "1.1.2", "metadata version")
     require(metadata["upload_type"] == "software", "metadata resource type")
     require(metadata["license"] == "MIT", "metadata license")
     require(len(metadata["creators"]) == 3, "metadata creators")
@@ -437,7 +503,7 @@ def check_metadata() -> str:
 
 def check_public_data_boundary(frame: pd.DataFrame) -> str:
     subject_ids = frame.loc[frame["subject_id"].ne("NA"), "subject_id"]
-    valid_ids = subject_ids.str.fullmatch(r"(?:S\d{2}|(?:[1-9]|1[0-8]))")
+    valid_ids = subject_ids.str.fullmatch(r"S(?:0[1-9]|1[0-8])")
     require(bool(valid_ids.all()), "non-pseudonymous participant label")
     forbidden_columns = {
         "ecg_waveform",
@@ -730,6 +796,7 @@ def main() -> int:
         ("haemodynamics", lambda: check_haemodynamics(frame, anchors)),
         ("native_var", lambda: check_native_var(frame, anchors)),
         ("methods_text_matched_brs", check_methods_matched_brs),
+        ("v1_1_2_publication_output_sync", check_v1_1_2_publication_output_sync),
         ("nonlinear_sensitivity", check_nonlinear_sensitivity),
         ("metadata", check_metadata),
         ("public_data_boundary", lambda: check_public_data_boundary(frame)),

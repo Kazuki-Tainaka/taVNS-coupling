@@ -1,3 +1,72 @@
+# Release notes — 1.1.2
+
+This is a forward-only submission-output synchronization hotfix over v1.1.1.
+The v1.1.0 and v1.1.1 tags, GitHub releases, and published release assets are
+preserved and not modified. The release synchronizes non-central
+machine-readable outputs with the final revised submission; it does not change
+the central BRS/coherence findings or manuscript conclusions.
+
+## What changed
+
+- The public Supplementary Data 1 copy now contains the reviewed
+  available-case transfer-gain BRS phase summaries (Pre n = 14, Stim n = 15,
+  Post n = 14), complete-pair contrast sample sizes (12, 11, and 13), the
+  completed 43-row Post–Stim BH family including `Coh_mean q = 0.954`, and the
+  reviewed `Coh_mean` and `BRS_seq_all` Friedman metadata.
+- The public Supplementary Data 3 copy now provides an explicit
+  `excluded_subject_id` for each leave-one-out row, uniform `S01`–`S18`
+  participant identifiers, corrected status metadata for defined zero/count
+  values, coherence discordant counts (Pre-only 2, Stim-only 3), and reviewed
+  repository-relative source provenance.
+- The two past-RRI-to-SBP three-phase Cochran's Q summary rows are classified
+  as not estimable because all 18 participants had identical binary status in
+  Pre, Stim, and Post. The exact Pre–Stim McNemar rows remain estimable with
+  p = 1. The implementation and regression tests now enforce this distinction.
+- The methods-text-matched REF row is sourced from the exact central
+  participant-level BCa aggregate rather than an independent bootstrap run.
+  Its mean difference remains -2.0507081874084636 and its exact interval is
+  -3.8125937386490705 to -1.09512491343104. The four prespecified comparator
+  branches are unchanged.
+- Added `scripts/synchronize_v1_1_2_publication_outputs.py` and a pinned config
+  to make the reviewed submission-to-public mapping deterministic and
+  hash-validated. Added `scripts/build_deterministic_release.py` for the
+  manually uploaded whole-release asset.
+- Expanded tests and the public validator for the revised machine-readable
+  outputs, exact REF provenance, pseudonymous identifier convention, and
+  degenerate-Q behavior. Release metadata and affected aggregate-output hashes
+  were updated to 1.1.2.
+
+## What did not change
+
+- The reference BRS Stim–Pre mean difference (-2.05 ms/mmHg), central BCa
+  interval (-3.81 to -1.10), Wilcoxon p value, 17/18 direction count, and all
+  leave-one-out directions are unchanged.
+- The central BRS and coherence Friedman results, reference coherence
+  Stim–Pre result, haemodynamic context, BRS specification-landscape counts,
+  nonlinear sensitivity results, and scientific interpretation are unchanged.
+- The 54 approved pseudonymised participant-level derived beat tables under
+  `data/beats/` are byte-for-byte identical to v1.1.1. No raw ECG or continuous
+  blood-pressure waveform is included.
+- Figures and the Supplementary Figure S3 generator are unchanged.
+
+## Verification
+
+Run either
+
+    validate_public_release.ps1
+
+on Windows PowerShell, or
+
+    python -m pytest tests -q
+    python scripts/validate_public_release.py
+    python scripts/synchronize_v1_1_2_publication_outputs.py --verify
+
+on any platform. The GitHub release asset is built from committed Git blobs by
+`scripts/build_deterministic_release.py` with fixed ordering, timestamps, file
+modes, and compression settings.
+
+---
+
 # Release notes — 1.1.1
 
 This is a forward-only cross-platform portability hotfix over v1.1.0. The

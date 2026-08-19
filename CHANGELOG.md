@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.1.2
+
+- Forward-only submission-output synchronization hotfix over v1.1.1. The
+  v1.1.0 and v1.1.1 tags, releases, and published assets remain unchanged.
+- Synchronized the public Supplementary Data 1 copy with the final revised
+  submission: available-case transfer-gain BRS phase summaries and paired
+  sample sizes, complete Post–Stim BH metadata, and reviewed Friedman
+  metadata. Central BRS and coherence results are unchanged.
+- Synchronized the public Supplementary Data 3 copy with the final revised
+  submission: explicit leave-one-out exclusions, uniform pseudonymous IDs,
+  corrected estimability metadata for defined zero/count values, coherence
+  discordant counts, repository-relative provenance, and the reviewed
+  degenerate three-phase Cochran's Q records.
+- Updated `src/stats_core.py` and `src/native_paired_beat_var.py` so a binary
+  three-phase matrix with no within-participant variation is classified as
+  analytically not estimable. Exact Pre–Stim McNemar tests with no discordant
+  pairs remain estimable with p = 1.
+- Added the exact aggregate `expected_outputs/canonical_brs_contrasts.csv`
+  and synchronized the methods-text-matched REF row from its central
+  participant-level BCa output. The exact REF interval is
+  -3.8125937386490705 to -1.09512491343104; comparator branches are unchanged.
+- Added a pinned, hash-validated output synchronization command, regression
+  tests for the publication copies and degenerate-Q behavior, and a
+  deterministic release-asset builder.
+- Updated public artifact hashes and release metadata for 1.1.2. The 54
+  approved pseudonymised participant-level derived beat tables, figures,
+  central scientific values, and manuscript conclusions are unchanged.
+
 ## 1.1.1
 
 - Forward-only cross-platform portability hotfix. v1.1.0 tag, release, and

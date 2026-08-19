@@ -325,16 +325,39 @@ def mcnemar_exact(first: np.ndarray, second: np.ndarray) -> dict[str, float | in
     }
 
 
-def cochran_q_test(matrix: np.ndarray) -> dict[str, float | int]:
-    data = np.asarray(matrix, dtype=int)
+def cochran_q_test(matrix: np.ndarray) -> dict[str, float | int | str]:
+    """Return Cochran's Q, explicitly classifying degenerate matrices.
+
+    When every subject has the same binary status in every condition, the
+    within-subject variation term is zero.  In that case Q and its p value
+    are undefined; reporting ``Q = 0, p = 1`` would incorrectly present a
+    non-estimable test as an ordinary null result.
+    """
+    data = np.asarray(matrix)
     if data.ndim != 2 or data.shape[1] < 3:
         raise ValueError("Cochran Q requires subjects by at least three conditions")
+    if data.shape[0] == 0:
+        return {
+            "n": 0,
+            "k": data.shape[1],
+            "statistic": np.nan,
+            "p_value": np.nan,
+            "status": "not_estimable",
+            "NA_reason": "no_evaluable_participants",
+            "exact_or_asymptotic": "NA",
+        }
+    if not np.isin(data, (0, 1, False, True)).all():
+        raise ValueError("Cochran Q matrix must contain only binary values")
+    data = data.astype(int)
     if np.all(data == data[:, [0]]):
         return {
             "n": data.shape[0],
             "k": data.shape[1],
-            "statistic": 0.0,
-            "p_value": 1.0,
+            "statistic": np.nan,
+            "p_value": np.nan,
+            "status": "not_estimable",
+            "NA_reason": "no_within_participant_variation_across_phases",
+            "exact_or_asymptotic": "NA",
         }
     result = cochrans_q(data)
     return {
@@ -342,4 +365,7 @@ def cochran_q_test(matrix: np.ndarray) -> dict[str, float | int]:
         "k": data.shape[1],
         "statistic": float(result.statistic),
         "p_value": float(result.pvalue),
+        "status": "estimable",
+        "NA_reason": "NA",
+        "exact_or_asymptotic": "asymptotic_chi_square",
     }

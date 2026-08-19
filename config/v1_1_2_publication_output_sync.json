@@ -1,0 +1,61 @@
+{
+  "release_version": "1.1.2",
+  "supplementary_data_1": {
+    "submission_source_sha256": "846c039ff7e302d9035ad2b4165e36bd28a8f68d1aa640f9b20697baa79e7828",
+    "repository_target": "expected_outputs/publication_source_data/supplementary_data_1.csv",
+    "target_sha256": "846c039ff7e302d9035ad2b4165e36bd28a8f68d1aa640f9b20697baa79e7828",
+    "row_count": 46,
+    "column_count": 52,
+    "post_stim_bh_family_size": 43,
+    "brs_tf_expected": {
+      "minimum_evaluable_n": "11",
+      "n_Pre": "14",
+      "n_Stim": "15",
+      "n_Post": "14",
+      "n_Stim_Pre": "12",
+      "n_Post_Pre": "11",
+      "n_Post_Stim": "13",
+      "Pre_mean": "9.60829",
+      "Pre_SD": "5.688",
+      "Stim_mean": "8.08246",
+      "Stim_SD": "5.13748",
+      "Post_mean": "7.34352",
+      "Post_SD": "2.7005",
+      "Stim_Pre_mean_difference": "-1.39303",
+      "Post_Pre_mean_difference": "-1.6061",
+      "Post_Stim_mean_difference": "0.0387214"
+    }
+  },
+  "supplementary_data_3": {
+    "submission_source_sha256": "6bca6a81f5d594f20d1baa3152e5a67827c5878fbc80e027cfc08a81d18fd65f",
+    "repository_target": "expected_outputs/publication_source_data/supplementary_data_3_brs_sensitivity_and_coupling_significance.csv",
+    "target_sha256": "6bca6a81f5d594f20d1baa3152e5a67827c5878fbc80e027cfc08a81d18fd65f",
+    "row_count": 3152,
+    "column_count": 97
+  },
+  "canonical_brs_contrasts": {
+    "submission_source_sha256": "c852f4d9a4205f9dc2afecda647b1fd8522abe40c83ef20dda1d02d81f6c943e",
+    "repository_target": "expected_outputs/canonical_brs_contrasts.csv",
+    "target_sha256": "c852f4d9a4205f9dc2afecda647b1fd8522abe40c83ef20dda1d02d81f6c943e",
+    "row_count": 9,
+    "column_count": 28,
+    "reference_metric": "BRS_seq_all",
+    "reference_contrast": "Stim-Pre"
+  },
+  "methods_text_matched_brs_summary": {
+    "repository_target": "expected_outputs/methods_text_matched_brs_summary.csv",
+    "target_sha256": "cc72fe1a959f0bd9851a1e76131a1d33fe7778124b23cba782b79403846ac336",
+    "comparator_rows_sha256": "37d4f1188662ee6630c211a6b89c3ebc380426fc1c601c221be6596515daaac8",
+    "field_mapping": {
+      "paired_n": "n",
+      "mean_difference": "mean_difference",
+      "mean_difference_ci_low": "mean_difference_ci_low",
+      "mean_difference_ci_high": "mean_difference_ci_high",
+      "cohens_dz": "cohens_dz",
+      "n_negative": "n_negative",
+      "n_positive": "n_positive",
+      "n_zero": "n_zero",
+      "wilcoxon_p_two_sided": "wilcoxon_p_two_sided"
+    }
+  }
+}

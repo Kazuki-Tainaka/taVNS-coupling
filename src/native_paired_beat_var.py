@@ -19,7 +19,6 @@ import pandas as pd
 import scipy
 import statsmodels
 from scipy import signal, stats
-from statsmodels.stats.contingency_tables import cochrans_q
 from statsmodels.stats.multitest import multipletests
 from statsmodels.tsa.api import VAR
 
@@ -31,6 +30,7 @@ from revision_utils import (
     SUBJECTS,
     load_paired_full,
 )
+from stats_core import cochran_q_test
 
 
 ANALYSIS_DOMAIN: Final[str] = "native_paired_beats"
@@ -390,6 +390,7 @@ def summarize_prevalence(results: pd.DataFrame) -> pd.DataFrame:
                         "p_value": "NA",
                         "discordant_pre_only": "NA",
                         "discordant_stim_only": "NA",
+                        "status": "estimable" if trials else "not_estimable",
                         "NA_reason": "NA" if trials else "no_evaluable_participants",
                     }
                 )
@@ -428,20 +429,13 @@ def summarize_prevalence(results: pd.DataFrame) -> pd.DataFrame:
                     "p_value": p_mcnemar,
                     "discordant_pre_only": pre_only,
                     "discordant_stim_only": stim_only,
+                    "status": "estimable",
                     "NA_reason": "NA",
                 }
             )
 
             three_phase = pivot[list(PHASE_ORDER)].dropna().astype(int)
-            if len(three_phase) and not np.all(
-                three_phase.to_numpy() == three_phase.to_numpy()[:, [0]]
-            ):
-                q_result = cochrans_q(three_phase.to_numpy())
-                q_statistic = float(q_result.statistic)
-                q_p = float(q_result.pvalue)
-            else:
-                q_statistic = 0.0
-                q_p = 1.0
+            q_result = cochran_q_test(three_phase.to_numpy())
             rows.append(
                 {
                     "analysis_domain": ANALYSIS_DOMAIN,
@@ -455,12 +449,13 @@ def summarize_prevalence(results: pd.DataFrame) -> pd.DataFrame:
                     "exact_ci_95_low": "NA",
                     "exact_ci_95_high": "NA",
                     "test": "Cochran_Q_chi_square",
-                    "exact_or_asymptotic": "asymptotic_chi_square",
-                    "test_statistic": q_statistic,
-                    "p_value": q_p,
+                    "exact_or_asymptotic": q_result["exact_or_asymptotic"],
+                    "test_statistic": q_result["statistic"],
+                    "p_value": q_result["p_value"],
                     "discordant_pre_only": "NA",
                     "discordant_stim_only": "NA",
-                    "NA_reason": "NA",
+                    "status": q_result["status"],
+                    "NA_reason": q_result["NA_reason"],
                 }
             )
     return pd.DataFrame(rows)
@@ -642,7 +637,11 @@ def run_analysis(output_dir: Path) -> dict[str, Path]:
         "multiple_testing": "BH within each phase-direction family of 18 participants",
         "prevalence_interval": "two-sided exact 95% Clopper-Pearson",
         "pre_vs_stim": "two-sided exact conditional McNemar binomial test",
-        "three_phase": "Cochran Q with asymptotic chi-square reference",
+        "three_phase": (
+            "Cochran Q with asymptotic chi-square reference when estimable; "
+            "not estimable when all participants have identical binary status "
+            "across phases"
+        ),
         "unique_models": 54,
         "directional_rows": 108,
         "software": {
